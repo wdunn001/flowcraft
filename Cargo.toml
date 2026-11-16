@@ -1,0 +1,54 @@
+[workspace]
+resolver = "3"
+members = ["crates/*", "apps/*", "xtask"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+license = "MIT OR Apache-2.0"
+rust-version = "1.95"
+repository = "https://github.com/wdunn001/flowcraft"
+
+[workspace.dependencies]
+# internal
+flowcraft-flow = { path = "crates/flow" }
+flowcraft-engine = { path = "crates/engine" }
+flowcraft-connectors = { path = "crates/connectors" }
+
+# foundation
+thiserror = "2"
+# Command-line parsing for flowcraft-cli (craft-contrib RFC-0012: clap derive, as photocraft does).
+clap = { version = "4", features = ["derive"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1", features = ["float_roundtrip"] }
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+
+[workspace.lints.clippy]
+cognitive_complexity = "deny"
+too_many_arguments = "deny"
+wildcard_imports = "deny"
+dbg_macro = "warn"
+# FlowCraft never crashes: shipped code returns `Result`/`Option` instead of panicking (see
+# AGENTS.md, Never crash). Tests may unwrap (clippy.toml).
+unwrap_used = "deny"
+expect_used = "deny"
+panic = "deny"
+todo = "deny"
+unimplemented = "deny"
+unreachable = "deny"
+
+# Workspace crates keep file:line in panic backtraces; dependencies carry no debug info. Both make
+# the test build faster and the target dir smaller.
+[profile.dev]
+opt-level = 1
+debug = "line-tables-only"
+
+[profile.dev.package."*"]
+opt-level = 2
+debug = false
+
+[profile.release]
+lto = "thin"
+codegen-units = 4

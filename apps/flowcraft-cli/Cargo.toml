@@ -1,0 +1,20 @@
+[package]
+name = "flowcraft-cli"
+description = "Validate, inspect and run FlowCraft flows from the command line"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+repository.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+flowcraft-flow.workspace = true
+flowcraft-engine.workspace = true
+flowcraft-connectors.workspace = true
+clap.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
