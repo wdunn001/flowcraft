@@ -1,7 +1,8 @@
 # Roadmap
 
-Stage: scaffold, 0.1.0. The flow format, the engine, the connector seams and the CLI exist with
-tests. Nothing ships yet. The ranked work list lives in [docs/gaps.md](docs/gaps.md).
+Stage: M1 of the program plan, 0.1.x. The flow format, the engine, the integration seams,
+the CLI and the incubating flowchart kernel exist with tests. Nothing ships yet. The ranked
+work list lives in [docs/gaps.md](docs/gaps.md).
 
 ## Done
 
@@ -11,17 +12,35 @@ tests. Nothing ships yet. The ranked work list lives in [docs/gaps.md](docs/gaps
 - Control-port envelope builder matching the apps' `docs/control-protocol.md`, with a TCP
   transport in the CLI.
 - Draft CollabCraft binding for files, sharing, notifications and signatures.
-- CLI: `new`, `validate`, `inspect`, `run` with dry-run.
+- `crates/flowchart` (`craft-flowchart`): the flowchart kernel incubating for craft-libs.
+  Connector routing and mind-map layout lifted from FigCraft's boards, a layered layout for
+  generated flows and a diagram document. FlowCraft is the first consumer.
+- `flowcraft-cli diagram`: a flow drawn as a diagram, auto-arranged.
 
-## Next
+## M1, the rest
 
-- Verify the control envelope against each target app, then run a flow end to end against a
-  live app.
-- Land the flow lane in the CollabCraft service so the cloud operations have a real counterpart.
-- Trigger delivery: app events through CollabCraft, schedules through a runner.
+- The egui designer (`apps/flowcraft`): canvas on the kernel, step property panel,
+  validation pinned to nodes, simulate over the diagram.
 
-## Later
+## M2
 
-- An egui flow canvas (`apps/flowcraft`), built like the suite's other apps.
-- A browser build served at `craft.quasarke.net`.
-- E-signature steps tracking the suite's e-signature tooling as it lands.
+- The run journal (`crates/run`): event-sourced, resumable, idempotency keys per step
+  attempt; waits for tasks, envelopes, timers and webhooks.
+- The flow lane as an optional crate mounted by the CollabCraft service: run store,
+  trigger intake, task inbox.
+- The `form-submitted` trigger from FormCraft; the GridCraft work-queue projection.
+
+## M3
+
+- The e-sign contract workflow end to end: FormCraft signature placements, `craft-esign`,
+  acceptance task, invoice, payment stub.
+
+## M4
+
+- RFC-0042 in craft-contrib; the kernel moves to craft-libs; FigCraft cuts over and
+  deletes its copies; EffectCraft adopts the layered layout.
+
+## M5
+
+- The Stripe adapter, AI-agent steps behind approval gates, the full client-onboarding
+  showcase, browser builds.

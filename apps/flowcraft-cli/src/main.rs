@@ -4,11 +4,13 @@
 //! apps' loopback control ports. Cloud operations need a CollabCraft session the CLI does
 //! not hold yet; `run` reports them clearly instead (docs/gaps.md).
 
+mod diagram;
+
 use clap::{Parser, Subcommand};
-use flowcraft_connectors::control::{ControlSessions, auth_line, parse_reply};
-use flowcraft_connectors::{AppConnector, TransportError};
 use flowcraft_engine::{Connector, ConnectorError, RunReport, StepStatus};
 use flowcraft_flow::{Flow, validate};
+use flowcraft_integrations::control::{ControlSessions, auth_line, parse_reply};
+use flowcraft_integrations::{AppConnector, TransportError};
 use serde::Deserialize;
 use serde_json::{Value, json};
 use std::collections::BTreeMap;
@@ -38,6 +40,13 @@ enum Cmd {
     Validate { file: PathBuf },
     /// Summarize a flow document.
     Inspect { file: PathBuf },
+    /// Draw a flow document: a craft-flowchart diagram, auto-arranged.
+    Diagram {
+        file: PathBuf,
+        /// Where to write the diagram; the default is standard output.
+        #[arg(long)]
+        out: Option<PathBuf>,
+    },
     /// Run a flow. Without --targets this is a dry run.
     Run {
         file: PathBuf,
@@ -74,6 +83,7 @@ fn dispatch(cli: Cli) -> Result<(), Box<dyn Error>> {
             Ok(())
         }
         Cmd::Inspect { file } => inspect(&load_flow(&file)?),
+        Cmd::Diagram { file, out } => draw(&file, out.as_deref()),
         Cmd::Run { file, trigger_payload, targets } => run_flow(&file, trigger_payload.as_deref(), targets.as_deref()),
     }
 }
@@ -86,6 +96,22 @@ fn load_flow(file: &Path) -> Result<Flow, Box<dyn Error>> {
 fn load_json(file: &Path) -> Result<Value, Box<dyn Error>> {
     let text = std::fs::read_to_string(file)?;
     Ok(serde_json::from_str(&text)?)
+}
+
+fn draw(file: &Path, out: Option<&Path>) -> Result<(), Box<dyn Error>> {
+    let flow = load_flow(file)?;
+    validate(&flow)?;
+    let drawn = diagram::diagram_for(&flow);
+    drawn.validate()?;
+    let text = drawn.to_json_string()?;
+    match out {
+        None => println!("{text}"),
+        Some(path) => {
+            std::fs::write(path, text + "\n")?;
+            println!("wrote {}", path.display());
+        }
+    }
+    Ok(())
 }
 
 fn new_flow(file: &Path, name: &str) -> Result<(), Box<dyn Error>> {

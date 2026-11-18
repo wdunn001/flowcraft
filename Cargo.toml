@@ -13,9 +13,12 @@ repository = "https://github.com/wdunn001/flowcraft"
 # internal
 flowcraft-flow = { path = "crates/flow" }
 flowcraft-engine = { path = "crates/engine" }
-flowcraft-connectors = { path = "crates/connectors" }
+flowcraft-integrations = { path = "crates/integrations" }
+# Incubating here for craft-libs (RFC-0042 to come); FlowCraft is the first consumer.
+craft-flowchart = { path = "crates/flowchart" }
 
 # foundation
+kurbo = { version = "0.13", features = ["serde"] }
 thiserror = "2"
 # Command-line parsing for flowcraft-cli (craft-contrib RFC-0012: clap derive, as photocraft does).
 clap = { version = "4", features = ["derive"] }

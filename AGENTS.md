@@ -75,9 +75,17 @@ Repos don't share code.
   validation. It does no IO.
 - `crates/engine` runs a flow against the `Connector` trait. It opens no sockets and spawns no
   processes.
-- `crates/connectors` builds control-port lines and CollabCraft requests behind transport
-  traits. It opens no sockets either; that suite style comes from `craft-nextcloud`.
-- `apps/flowcraft-cli` owns the real IO: files and TCP to `127.0.0.1` control ports.
+- `crates/integrations` builds control-port lines and CollabCraft requests behind
+  transport traits. It opens no sockets either; that suite style comes from
+  `craft-nextcloud`. The crate says "integration" because in the suite's vocabulary a
+  connector is a drawn line.
+- `crates/flowchart` is `craft-flowchart`, the flowchart kernel incubating here for
+  craft-libs (RFC-0042 to come). Its router and mind-map layout are lifted from FigCraft's
+  boards; keep lifted code faithful so the FigCraft cutover stays a deletion. It must
+  never depend on egui or craft-ui. It never learns workflow semantics: it draws.
+- `apps/flowcraft-cli` owns the real IO: files and TCP to `127.0.0.1` control ports. Its
+  `diagram.rs` is the flow-to-diagram projection; the diagram is derived state, never the
+  source of truth.
 - `xtask` is the gate: `cargo xtask ci` runs the format check, clippy with warnings denied, the
   tests and the asset attribution check.
 

@@ -2,7 +2,7 @@
 //!
 //! This crate holds the file format and its validation. It does no IO and opens no sockets.
 //! Execution semantics live in `flowcraft-engine`; the seams to real apps and to CollabCraft
-//! live in `flowcraft-connectors`.
+//! live in `flowcraft-integrations`.
 
 pub mod refspec;
 mod validate;
@@ -85,7 +85,7 @@ pub enum Action {
     },
 }
 
-/// A CollabCraft operation. The HTTP binding lives in `flowcraft-connectors`.
+/// A CollabCraft operation. The HTTP binding lives in `flowcraft-integrations`.
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(tag = "type", rename_all = "kebab-case")]
 pub enum CloudOperation {

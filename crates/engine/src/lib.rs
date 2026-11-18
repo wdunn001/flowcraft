@@ -2,7 +2,7 @@
 //!
 //! The engine owns ordering, conditions and `$ref` resolution. It opens no sockets and
 //! spawns no processes: every effect goes through the `Connector` the caller passes in.
-//! Real connectors live in `flowcraft-connectors`; tests use a mock.
+//! Real connectors live in `flowcraft-integrations`; tests use a mock.
 
 use flowcraft_flow::refspec::{PathSeg, RefFrom, RefSpecError, as_ref_spec};
 use flowcraft_flow::{Action, Condition, Edge, Flow, Step, ValidateError, validate};

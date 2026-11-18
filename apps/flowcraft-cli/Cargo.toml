@@ -13,7 +13,8 @@ workspace = true
 [dependencies]
 flowcraft-flow.workspace = true
 flowcraft-engine.workspace = true
-flowcraft-connectors.workspace = true
+flowcraft-integrations.workspace = true
+craft-flowchart.workspace = true
 clap.workspace = true
 serde.workspace = true
 serde_json.workspace = true

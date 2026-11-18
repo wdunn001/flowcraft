@@ -15,10 +15,14 @@ The repository is an early scaffold. It is built to the conventions of the Craft
   values, caps and validation.
 - `crates/engine` runs a flow. It orders the steps, evaluates edge conditions and resolves
   references. Every effect goes through a `Connector` trait.
-- `crates/connectors` builds the Craft control-port envelope (`engine.execute`) and a draft
-  CollabCraft binding. No sockets live in the library crates.
-- `apps/flowcraft-cli` validates, inspects and runs flows. It owns the TCP transport to the
-  apps' control ports.
+- `crates/integrations` builds the Craft control-port envelope (`engine.execute`) and a
+  draft CollabCraft binding. No sockets live in the library crates.
+- `crates/flowchart` is `craft-flowchart`, the flowchart kernel incubating here for
+  craft-libs: connector routing and mind-map layout lifted from FigCraft's boards, a
+  layered layout for generated flows and a diagram document with DrawingML flowchart
+  shape ids. Pure geometry, no UI.
+- `apps/flowcraft-cli` validates, inspects, draws and runs flows. It owns the TCP
+  transport to the apps' control ports.
 
 ## A flow
 
@@ -43,7 +47,8 @@ The repository is an early scaffold. It is built to the conventions of the Craft
 ```
 
 `flowcraft-cli new starter.json` writes this document. `flowcraft-cli run starter.json` dry-runs
-it. The format is specified in [docs/flow-format.md](docs/flow-format.md).
+it. `flowcraft-cli diagram starter.json` draws it as an auto-arranged flowchart diagram. The
+format is specified in [docs/flow-format.md](docs/flow-format.md).
 
 ## Build
 

@@ -1,5 +1,5 @@
 [package]
-name = "flowcraft-connectors"
+name = "flowcraft-integrations"
 description = "FlowCraft's seams to Craft app control ports and to CollabCraft; builds requests and parses replies, opens no sockets"
 version.workspace = true
 edition.workspace = true
